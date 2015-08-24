@@ -1,9 +1,0 @@
-軟體名稱:changken-phpforum 
-軟體版本v9.1 rc1
-軟體網站:http://changken.biz/my-works
-軟體作者:changken
-軟體作者個人網站:
-http://changken.biz
-http://changken.org
-軟體授權方式:
-changken-phpforum由changken製作，以創用CC 姓名標示-相同方式分享 4.0 國際 授權條款釋出。
