@@ -1,0 +1,20 @@
+#系統規則，請勿修改！！！
+
+RewriteEngine On
+#網站目錄，若網站目錄為cpf，請維持不動，若是根目錄請改為/
+RewriteBase /cpf
+
+#偽靜態會員討論區版塊網址
+RewriteRule ^forum/forum-([0-9]{1,})\.html$ forum/forum.php?groupid=$1
+
+#偽靜態會員討論區帖子網址
+RewriteRule ^forum/forum_posts-([0-9]{1,})\.html$ forum/forum_posts.php?NO=$1
+
+#偽靜態部落格文章網址
+RewriteRule ^plugin/blog/([0-9]{1,})\.html$ plugin/blog/posts.php?NO=$1
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+ErrorDocument 403 /403.html
+ErrorDocument 404 /404.html
+</IfModule>

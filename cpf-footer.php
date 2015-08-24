@@ -1,0 +1,1 @@
+﻿Powered By <a href="http://changken.biz/my-works">changken-phpforum</a> v9.1 rc2

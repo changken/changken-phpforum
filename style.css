@@ -1,0 +1,33 @@
+﻿body{ 
+  color:black;
+  background-color:#E3E3E3; 
+  font-family:"微軟正黑體";
+}
+h1{ 
+  font-size:11mm;
+}
+h2{
+  font-size:10mm;
+}
+h3{
+  font-size:9mm; 
+}
+h4{
+  font-size:8mm; 
+}
+h5{
+  font-size:7mm; 
+}
+h6{
+  font-size:6mm; 
+}
+p{
+  font-size:5mm;
+}
+table{
+  font-size:5mm;
+}
+nav{
+  font-size:20px;
+  list-style-type:none;
+}
