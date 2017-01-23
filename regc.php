@@ -1,54 +1,60 @@
-﻿<?php
-header("Content-Type:text/html; charset=utf-8"); 
-include("mysql_connect.inc.php");
-
-$username = mysql_real_escape_string($_POST['username']);
-$email = mysql_real_escape_string($_POST['email']);
-$password = mysql_real_escape_string($_POST['password']);
-$password2 = mysql_real_escape_string($_POST['password2']);
-$level = 10;//權限為一般會員(10)
-$password_md5 = md5($password);//密碼加密
-$password_md5_2 = md5($password2);//密碼(再輸入一次)加密
-//搜尋資料庫資料
-$sql = "SELECT * FROM user WHERE username = '$username';";
-$result = mysql_query($sql);
-$row = @mysql_fetch_row($result);
-
-//判斷帳號密碼是否為空值
-//確認密碼輸入的正確性
-if($username==null)//檢查使用者名稱是否為空
-{
-header("Location:reg.php?a=err1");
-}
-elseif($password==null)//檢查密碼是否為空
-{
-header("Location:reg.php?a=err2");
-}
-elseif($password2==null)//檢查密碼(再輸入一次)是否為空
-{
-header("Location:reg.php?a=err3");
-}
-elseif($password_md5!=$password_md5_2)//檢查密碼是否輸入一致
-{
-header("Location:reg.php?a=err4");
-}
-elseif($username==$row[1])//檢查使用者名稱是否已經被使用了
-{
-header("Location:reg.php?a=err5");
-}
-else
-{
-        //新增資料進資料庫語法
-        $sql = "INSERT INTO user (username, email, password, level) VALUES ('$username', '$email', '$password_md5', '$level');";
-        if(mysql_query($sql))
-        {
-                echo '註冊成功!';
-                echo '<meta http-equiv=REFRESH CONTENT=2;url=login.php>';
-        }
-        else
-        {
-                echo '註冊失敗!';
-                echo '<meta http-equiv=REFRESH CONTENT=2;url=reg.php>';
-        }
-}
+<?php
+require_once("mysql_connect.inc.php");
+require_once("config.php");
+require_once("inc/function.php");
 ?>
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<title><?php echo $config["sitename"];?>-會員註冊中...</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+	<!--標題-->
+	<h1><?php echo $config["sitename"];?>-會員註冊中...</h1>
+	<?php include_once("nav.php");?><!--嵌入nav.php-->
+	<hr><size=5>
+	<!--內容-->
+	<?php
+		$code = cpf_reg($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password2'],10);
+		switch($code)
+		{
+			case 0:
+				echo "使用者名稱為空";
+				echo "<meta http-equiv=REFRESH CONTENT=1;url=reg.php>";
+			break;
+			case 1:
+				echo "密碼為空";
+				echo "<meta http-equiv=REFRESH CONTENT=1;url=reg.php>";
+			break;
+			case 2:
+				echo "密碼(再輸入一次)為空";
+				echo "<meta http-equiv=REFRESH CONTENT=1;url=reg.php>";
+			break;
+			case 3:
+				echo "密碼不一致";
+				echo "<meta http-equiv=REFRESH CONTENT=1;url=reg.php>";
+			break;
+			case 4:
+				echo "用戶名已被使用";
+				echo "<meta http-equiv=REFRESH CONTENT=1;url=reg.php>";
+			break;
+			case 5:
+				echo "註冊成功！";
+				echo "<meta http-equiv=REFRESH CONTENT=1;url=login.php>";
+			break;
+			case 6:
+				echo "註冊失敗！";
+				echo "<meta http-equiv=REFRESH CONTENT=1;url=reg.php>";
+			break;
+		}
+	?>
+	<hr><size=5>
+	<!--頁尾-->
+	<?php include_once("cpf-footer.php");?>
+</body>
+
+</html>

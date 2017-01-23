@@ -1,15 +1,15 @@
-﻿<?php 
-header("Content-Type:text/html; charset=utf-8");
+<?php 
 session_start();
+require_once("mysql_connect.inc.php");
+require_once("config.php");
 
-include("mysql_connect.inc.php");
 $NO = $_POST['NO'];
 
-if($_SESSION['username'] != null)
+if($_SESSION[$config['cookie_prefix'].'username'] != null)
 {
         //刪除資料庫資料語法
-        $sql = "DELETE FROM user_pm WHERE NO='$NO';";
-        if(mysql_query($sql))
+        $sql = "DELETE FROM `".$prefix."user_pm` WHERE `NO`='$NO';";
+        if(mysqli_query($conn,$sql))
         {
                 echo '刪除成功!';
                 echo '<meta http-equiv=REFRESH CONTENT=2;url=member.php>';
