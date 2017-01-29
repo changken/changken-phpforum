@@ -1,6 +1,4 @@
 ﻿body{ 
-  color:black;
-  background-color:#E3E3E3; 
   font-family:"微軟正黑體";
 }
 h1{ 
@@ -22,12 +20,14 @@ h6{
   font-size:6mm; 
 }
 p{
-  font-size:5mm;
-}
-table{
-  font-size:5mm;
-}
-nav{
   font-size:20px;
-  list-style-type:none;
+}
+.table{
+	font-size:18px;
+}
+.form-horizontal{
+	margin-bottom:30px;	
+}
+.nav-tabs{
+  font-size:20px;
 }

@@ -22,12 +22,12 @@ $config["forum"] = $row[2];//是否開啟會員討論區，開啟為true，關�
 $sql = "SELECT * FROM `".$prefix."setting` WHERE `NO`='5';";
 $result = mysqli_query($conn,$sql);
 $row = mysqli_fetch_row($result);
-$config["upload"] = $row[2];//是否開啟檔案上傳，開啟為true，關閉為false
+$config["news"] = $row[2];//是否開啟最新消息，開啟為true，關閉為false
 //============================================================
 $sql = "SELECT * FROM `".$prefix."setting` WHERE `NO`='6';";
 $result = mysqli_query($conn,$sql);
 $row = mysqli_fetch_row($result);
-$config["upload-max-size"] = $row[2];//檔案上傳最大限制，單位為B，100000000B為100MB
+$config["homepage_welcome"] = $row[2];//首頁歡迎語
 //============================================================
 $sql = "SELECT * FROM `".$prefix."setting` WHERE `NO`='7';";
 $result = mysqli_query($conn,$sql);

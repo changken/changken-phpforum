@@ -1,46 +1,63 @@
-﻿<?php 
-header("Content-Type:text/html; charset=utf-8"); 
-session_start(); 
-
-include("mysql_connect.inc.php");
-
-$username = mysql_real_escape_string($_POST['username']);
-$email = mysql_real_escape_string($_POST['email']);
-$password = mysql_real_escape_string($_POST['password']);
-$password2 = mysql_real_escape_string($_POST['password2']);
-$level = $_POST['level'];//會員權限無法更改，到後台才可更改
-$password_md5 = md5($password);//密碼加密
-$password_md5_2 = md5($password2);//密碼(再輸入一次)加密
-
-//判斷帳號密碼是否為空值
-//確認密碼輸入的正確性
-if($password==null)//檢查密碼是否為空
-{
-header("Location:update.php?a=err1");
-}
-elseif($password2==null)//檢查密碼(再輸入一次)是否為空
-{
-header("Location:update.php?a=err2");
-}
-elseif($password_md5!=$password_md5_2)//檢查密碼是否輸入一致
-{
-header("Location:update.php?a=err3");
-}
-else
-{
-        $username = $_SESSION['username'];
-    
-        //更新資料庫資料語法
-        $sql = "UPDATE user SET password='$password_md5', email='$email', level='$level' WHERE username='$username';";
-        if(mysql_query($sql))
-        {
-                echo '修改成功!';
-                echo '<meta http-equiv=REFRESH CONTENT=2;url=member.php>';
-        }
-        else
-        {
-                echo '修改失敗!';
-                echo '<meta http-equiv=REFRESH CONTENT=2;url=member.php>';
-        }
-}
+<?php
+session_start();
+require_once("mysql_connect.inc.php");
+require_once("config.php");
+require_once("inc/function.php");
 ?>
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<title><?php echo $config["sitename"];?>-會員個人資訊修改中...</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- 最新編譯和最佳化的 CSS -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- 選擇性佈景主題 -->
+	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+	<!--引入Jquery-->
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<!-- 最新編譯和最佳化的 JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
+	<!--自訂義css-->
+	<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+	<div class="container">
+		<!--標題-->
+		<h1><?php echo $config["sitename"];?>-會員資訊修改中...</h1>
+		<?php include_once("nav.php");?><!--嵌入nav.php-->
+		<hr><size=5>
+		<!--內容-->
+		<?php
+		$code = cpf_update($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password2'],$_POST['level']);
+			switch($code)
+			{
+				case 0:
+					echo "<meta http-equiv=REFRESH CONTENT=0;url=update.php?err=1>";
+				break;
+				case 1:
+					echo "<meta http-equiv=REFRESH CONTENT=0;url=update.php?err=2>";
+				break;
+				case 2:		
+					echo "<meta http-equiv=REFRESH CONTENT=0;url=update.php?err=3>";
+				break;
+				case 3:
+					echo "<div class='alert alert-success' role='alert'>
+							<b>修改成功！</b>
+						</div>";
+					echo "<meta http-equiv=REFRESH CONTENT=2;url=update.php>";
+				break;
+				case 4:
+					echo "<meta http-equiv=REFRESH CONTENT=0;url=update.php?err=4>";
+				break;
+			}
+		?>
+		<hr><size=5>
+		<!--頁尾-->
+		<?php include_once("cpf-footer.php");?>
+	</div>
+</body>
+
+</html>

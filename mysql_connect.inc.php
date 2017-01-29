@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
 Project Name:changken-phpforum
 Author:changken

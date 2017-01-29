@@ -2,20 +2,37 @@
 <html>
 
 <head>
-<title>403被禁止</title>
-<meta charset="utf-8" />
-<link rel="stylesheet" href="style.css" />
+	<title>403被禁止</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- 最新編譯和最佳化的 CSS -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- 選擇性佈景主題 -->
+	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+	<!--引入Jquery-->
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<!-- 最新編譯和最佳化的 JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
+	<!--自訂義css-->
+	<link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-<!--標題-->
-<h1>403被禁止</h1>
-<hr><size=5>
-<!--內容-->
-<img src="image/403.png" height="350" width="638">
-<hr><size=5>
-<!--頁尾-->
-Powered By <a href="http://changken.biz/my-works">changken-phpforum</a>
+	<div class="container">
+	<!--標題-->
+	<h1 class="text-center">403被禁止</h1>
+	<hr><size=5>
+	<!--內容-->
+	<div class="alert alert-danger" role="alert">
+		<p class="text-center"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>    <b>你無權觀看此頁面！</b></p>
+	</div>
+	<p class="text-center"><a href="index.php" class=" btn btn-primary">返回首頁</a></p>
+	<hr><size=5>
+	<!--頁尾-->
+	<p class="text-center">
+		Powered By <a href="https://cpf.changken.org" target="_blank">changken-phpforum</a><br />
+		Designed By <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>
+	</p>
 </body>
 
 </html>

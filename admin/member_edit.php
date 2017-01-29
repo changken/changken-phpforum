@@ -1,65 +1,73 @@
-﻿<?php
+<?php
 session_start();
-include('../config.php'); 
-include("../mysql_connect.inc.php");
+require_once("../mysql_connect.inc.php");
+require_once('../config.php');
+require_once("../inc/function.php");
 ?>
 <!DOCTYPE html>
 <html lang="zh-TW">
 
 <head>
-<title><?php echo $config["sitename"];?>-會員帳號資訊編輯</title>
-<meta charset="utf-8" />
-<link rel="stylesheet" href="../style.css" />
+	<title><?php echo $config["sitename"];?>-帳號編輯</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../style.css" />
 </head>
 
 <body>
-<!--標題-->
-<h1><?php echo $config["sitename"];?>-會員帳號資訊編輯</h1>
-<?php include("nav.php");?><!--嵌入nav.php-->
-<hr><size=5>
-<!--內容-->
-<?php
-if($_SESSION['admin'] != null)
-{
-		echo "<span style='color:red;'>密碼留空視同不修改密碼！</span> <br />";
-		if($_GET['err']=="1")
-		{
-			echo "<span style='color:red;'>密碼(再輸入一次)不能為空！</span> <br />";
-		}
-		elseif($_GET['err']=="2")
-		{
-			echo "<span style='color:red;'>密碼輸入不一致！</span> <br />";
-		}
-		else
-		{
-		}
-        //將$_GET['NO']丟給$NO
-        //這樣在下SQL語法時才可以給搜尋的值
+	<!--標題-->
+	<h1><?php echo $config["sitename"];?>-帳號編輯</h1>
+	<?php include_once("nav.php");?><!--嵌入nav.php-->
+	<hr><size=5>
+	<!--內容-->
+	<?php
+	if($_SESSION[$config["cookie_prefix"].'admin'] != null)
+	{
         $NO = $_GET['NO'];
-        //若以下$NO直接用$_GET['NO']將無法使用
-        $sql = "SELECT * FROM user WHERE NO='$NO';";
-        $result = mysql_query($sql);
-        $row = mysql_fetch_row($result);
-    
-        echo "<form name=\"form\" method=\"post\" action=\"member_editc.php\">";
-        echo "NO：<input type=\"text\" name=\"NO\" value=\"$NO\" readonly=\"readonly\"/> <br />";		
-        echo "帳號：<input type=\"text\" name=\"username\" value=\"$row[1]\" readonly=\"readonly\"/> <br />";
-        echo "email：<input type=\"text\" name=\"email\" value=\"$row[2]\" /> <br />";
-        echo "密碼：<input type=\"password\" name=\"password\" value=\"\" /> <br />";
-        echo "再一次輸入密碼：<input type=\"password\" name=\"password2\" value=\"\" /> <br />";
-		echo "權限:<input type=\"text\" name=\"level\" value=\"$row[4]\" /> <br>";
-        echo "<input type=\"submit\" name=\"button\" value=\"確定\" />";
-        echo "</form>";
-}
-else
-{
-        echo '您無權限觀看此頁面!';
-        echo '<meta http-equiv=REFRESH CONTENT=2;url=login.php>';
-}
-?>
-<hr><size=5>
-<!--頁尾-->
-<?php include("../cpf-footer.php");?>
+		//套用取得帳號資訊函數
+		$row = cpf_getUserInfo($NO,2);
+	?>
+		<form name="form" method="post" action="member_editc.php">
+			<table width="500" border="1" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>NO</td>
+					<td><input type="text" name="NO" value="<?php echo $row['NO'];?>" readonly="readonly" /></td>
+				</tr>
+				<tr>
+					<td>帳號</td>
+					<td><input type="text" name="username" value="<?php echo $row['username'];?>" readonly="readonly" /></td>
+				</tr>
+				<tr>				
+					<td>email</td>
+					<td><input type="text" name="email" value="<?php echo $row['email'];?>" /></td>
+				</tr>
+				<tr>
+					<td>密碼</td>
+					<td><input type="password" name="password" value="" /></td>
+				</tr>
+				<tr>
+					<td>密碼(再輸入一次)</td>
+					<td><input type="password" name="password2" value="" /></td>
+				</tr>
+				<tr>
+					<td>權限</td>
+					<td><input type="text" name="level" value="<?php echo $row['level'];?>" /></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="submit" name="button" value="確定" /></td>
+				</tr>
+			</table>
+		</form>
+		<p>註:密碼及密碼(再輸入一次)留空為不修改密碼。</p>
+	<?php
+	}
+	else
+	{
+		header("location:../login.php");
+	}
+	?>
+	<hr><size=5>
+	<!--頁尾-->
+	<?php include_once("../cpf-footer.php");?>
 </body>
 
 </html>

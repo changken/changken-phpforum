@@ -27,7 +27,17 @@ $moderators = $g_row['moderators'];
 <head>
 	<title><?php echo $config["sitename"];?>-<?php echo $title;?></title>
 	<meta charset="utf-8"/>
-	<link rel="stylesheet" href="../style.css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- 最新編譯和最佳化的 CSS -->
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<!-- 選擇性佈景主題 -->
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<!--引入Jquery-->
+	<script src="../js/jquery-3.1.1.min.js"></script>
+	<!-- 最新編譯和最佳化的 JavaScript -->
+	<script src="../js/bootstrap.min.js"></script>
+	<!--自訂義css-->
+	<link rel="stylesheet" href="../style.css" />
 	<?php if($_SESSION[$config['cookie_prefix'].'admin']!=null or $_SESSION[$config['cookie_prefix'].'mod']!=null){?>
 		<script src="//cdn.ckeditor.com/4.4.7/full/ckeditor.js"></script>
 	<?php }else{?>
@@ -36,31 +46,44 @@ $moderators = $g_row['moderators'];
 </head>
 
 <body>
-	<!--標題-->
-	<h1><?php echo $config["sitename"];?>-<?php echo $title;?></h1>
-	<?php if($config['url_static']=="true"){ ?>
-		<p><a href="<?php echo $config["url"];?>"><?php echo $config["sitename"];?></a>><a href="<?php echo $config["url"];?>/forum">會員討論區</a>><a href="<?php echo $config["url"];?>/forum/forum-<?php echo $groupid;?>.html"><?php echo $groupname;?></a>><a href="<?php echo $config["url"];?>/forum/forum_posts-<?php echo $NO;?>.html"><?php echo $title;?></a></p>
-	<?php }else{?>
-	<p><a href="<?php echo $config["url"];?>"><?php echo $config["sitename"];?></a>><a href="<?php echo $config["url"];?>/forum">會員討論區</a>><a href="<?php echo $config["url"];?>/forum/forum.php?groupid=<?php echo $groupid;?>"><?php echo $groupname;?></a>><a href="<?php echo $config["url"];?>/forum/forum_posts.php?NO=<?php echo $NO;?>"><?php echo $title;?></a></p>
-	<?php } ?>
-	<hr><size=5>
-	<!--內容-->
-	<?php 
-	if($config["forum"]=="true")
-	{
-		if($ps_row['top']=="true")
+	<div class="container">
+		<!--標題-->
+		<h1 class="text-center"><?php echo $config["sitename"];?>-<?php echo $title;?></h1>
+		<ol class="breadcrumb">
+			<li><a href="<?php echo $config["url"];?>"><?php echo $config["sitename"];?></a></li>
+			<li><a href="<?php echo $config["url"];?>/forum">會員討論區</a></li>
+			<?php if($config['url_static']=="true"){ ?>
+				<li><a href="<?php echo $config["url"];?>/forum/forum-<?php echo $groupid;?>.html"><?php echo $groupname;?></a></li>
+				<li class="active"><a href="<?php echo $config["url"];?>/forum/forum_posts-<?php echo $NO;?>.html"><?php echo $title;?></a></li>
+			<?php }else{?>
+				<li><a href="<?php echo $config["url"];?>/forum/forum.php?groupid=<?php echo $groupid;?>"><?php echo $groupname;?></a></li>
+				<li class="active"><a href="<?php echo $config["url"];?>/forum/forum_posts.php?NO=<?php echo $NO;?>"><?php echo $title;?></a></li>
+			<?php } ?>		
+		</ol>
+		<hr><size=5>
+		<!--內容-->
+		<?php 
+		if($config["forum"]=="true")
 		{
-	?>
+		?>
 			<div style="background-color:#f5f5f5;">
 				<blockquote>
 					<span style="color: blue;">
 						<?php if($config['url_static']=="true"){?>
-							<h3><span style="color: red;">[置頂]</span><a href="forum_posts-<?php echo $ps_row['NO'];?>.html"><?php echo $ps_row['title'];?></a></h3>
+							<?php if($ps_row['top']=="true"){?>
+								<h3><span style="color: red;">[置頂]</span><a href="forum_posts-<?php echo $ps_row['NO'];?>.html"><?php echo $ps_row['title'];?></a></h3>
+							<?php }else{ ?>
+								<h3><a href="forum_posts-<?php echo $ps_row['NO'];?>.html"><?php echo $ps_row['title'];?></a></h3>
+							<?php }?>
 						<?php }else{?>
-							<h3><span style="color: red;">[置頂]</span><a href="forum_posts.php?NO=<?php echo $ps_row['NO'];?>"><?php echo $ps_row['title'];?></a></h3>
+							<?php if($ps_row['top']=="true"){?>
+								<h3><span style="color: red;">[置頂]</span><a href="forum_posts.php?NO=<?php echo $ps_row['NO'];?>"><?php echo $ps_row['title'];?></a></h3>
+							<?php }else{?>
+								<h3><a href="forum_posts.php?NO=<?php echo $ps_row['NO'];?>"><?php echo $ps_row['title'];?></a></h3>
+							<?php } ?>
 						<?php }?>
 					</span>
-						<?php echo $ps_row['content'];?><br>
+					<?php echo $ps_row['content'];?><br>
 					<br>
 					<b>作者:</b><?php echo $ps_row['name'];?>    |     <b>email:</b><?php echo $ps_row['email'];?>     |     <b>發表時間:</b><?php echo $ps_row['time'];?><br>
 					<?php if(($_SESSION[$config['cookie_prefix'].'mod'] == $moderators and $_SESSION[$config['cookie_prefix'].'mod'] != null )or $_SESSION[$config['cookie_prefix'].'admin'] != null){ //判別是否為版主開始 ?>
@@ -68,31 +91,11 @@ $moderators = $g_row['moderators'];
 					<?php }else{}//判別是否為版主結束?>
 				</blockquote>
 			</div>
-	<?php }elseif($ps_row['top']=="false"){?>
-	<!--如果沒有置頂-->
-			<div style="background-color:#f5f5f5;">
-				<blockquote>
-					<span style="color: blue;">
-						<?php if($config['url_static']=="true"){?>
-							<h3><a href="forum_posts-<?php echo $ps_row['NO'];?>.html"><?php echo $ps_row['title'];?></a></h3>
-						<?php }else{?>
-							<h3><a href="forum_posts.php?NO=<?php echo $ps_row['NO'];?>"><?php echo $ps_row['title'];?></a></h3>
-						<?php }?>
-					</span>
-					<?php echo $ps_row['content'];?><br>
-					<br>
-					<b>作者:</b><?php echo $ps_row['name'];?>    |     <b>email:</b><?php echo $ps_row['email'];?>     |     <b>發表時間:</b><?php echo $ps_row['time'];?><br>
-					<?php if(($_SESSION[$config['cookie_prefix'].'mod'] == $moderators and $_SESSION[$config['cookie_prefix'].'mod'] != null) or $_SESSION[$config['cookie_prefix'].'admin'] != null){ //判別是否為版主開始 ?>
-						<p><a href="forum_posts_edit.php?NO=<?php echo $ps_row['NO'];?>"><b>編輯</b></a>     <a href="forum_posts_delete.php?NO=<?php echo $ps_row['NO'];?>"><b>刪除</b></a></p>
-					<?php }else{}//判別是否為版主結束?>
-				</blockquote>
-			</div>
-	<?php 
-	}else{} 
-	$posts_id = $ps_row['NO'];
-	$re_sql = "SELECT * FROM `".$prefix."forum_posts_reply` WHERE `posts_id`='$posts_id';";
-	$re_result = mysqli_query($conn,$re_sql);
-	?>
+		<?php  
+		$posts_id = $ps_row['NO'];
+		$re_sql = "SELECT * FROM `".$prefix."forum_posts_reply` WHERE `posts_id`='$posts_id';";
+		$re_result = mysqli_query($conn,$re_sql);
+		?>
 	<h2>帖子回覆</h2>
 	<?php
         $re_num = mysqli_num_rows($re_result);
@@ -124,35 +127,64 @@ $moderators = $g_row['moderators'];
 			//抓取帳號資訊
 			$usr_row = cpf_getUserInfo($username,1);
 		?>
-		<form name="form" method="post" action="forumc.php?action=reply">
-			<table border=1>
-				<tr>
-					<th>回覆</th>
-				</tr>
-				<tr>
-					<td><input type="hidden" name="posts_id" value="<?php echo $posts_id; ?>"></td>
-				</tr>
-				<tr>
-					<td>帳號:<input type="text" name="name" value="<?php echo $username;?>" readonly="readonly"></td>
-				</tr>
-				<tr>
-					<td>email:<input type="text" name="email" value="<?php echo $usr_row['email'];?>" readonly="readonly"></td>
-				</tr>
-				<tr>
-					<td>標題:<input type="text" name="title"></td>
-				</tr>
-				<tr>
-					<td>內容 :<br> 
-					<textarea cols="100" rows="50" name="content" id="reply"></textarea></td>
-				</tr>
-				<script>
-					CKEDITOR.replace('reply');
-				</script>
-				<tr>
-					<td><input type="submit" value="回覆"><input type="reset" value="重新填寫" ></td>
-				</tr>
-			</table>
+		<form name="form" method="post" action="forumc.php?action=reply" class="form-horizontal">
+			<div class="row">
+				<div class="col-xs-6 col-xs-offset-3 col-md-8 col-md-offset-2">
+					<p class="text-center">回覆</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-xs-offset-3 col-md-8 col-md-offset-2">
+					<div class="form-group">
+						<label for="fr_posts_id">帖子ID</label>
+						<input type="text" name="posts_id" value="<?php echo $posts_id;?>" class="form-control" id="fr_posts_id" readonly>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-xs-offset-3 col-md-8 col-md-offset-2">
+					<div class="form-group">
+						<label for="fr_name">帳號</label>
+						<td><input type="text" name="name" value="<?php echo $username;?>" class="form-control" id="fr_name" readonly></td>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-xs-offset-3 col-md-8 col-md-offset-2">
+					<div class="form-group">
+						<label for="fr_email">email</label>
+						<td><input type="email" name="email" value="<?php echo $usr_row['email'];?>" class="form-control" id="fr_email" readonly></td>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-xs-offset-3 col-md-8 col-md-offset-2">
+					<div class="form-group">
+						<label for="fr_title">標題</label>
+						<input type="text" name="title" class="form-control" id="fr_title">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-xs-offset-3 col-md-8 col-md-offset-2">
+					<div class="form-group">	
+						<label for="reply">內容</label>
+						<textarea rows="3" name="content" id="reply" class="form-control"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-xs-offset-3 col-md-8 col-md-offset-2">
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">回覆</button>
+						<button type="reset" class="btn btn-danger">砍掉重練</button>
+					</div>
+				</div>
+			</div>
 		</form>
+		<script>
+			CKEDITOR.replace('reply');
+		</script>
 	<?php 
 		}
 		else
@@ -168,11 +200,9 @@ $moderators = $g_row['moderators'];
 	<hr><size=5>
 	<!--頁尾-->
 	<?php
-		mysqli_free_result($ps_result);
-		mysqli_free_result($g_result);
-		mysqli_free_result($re_result);
 		include_once("../cpf-footer.php");
 	?>
+	</div>
 </body>
 
 </html>

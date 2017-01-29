@@ -35,11 +35,22 @@ if($_SESSION[$config["cookie_prefix"].'mod'] != null or $_SESSION[$config["cooki
         $NO = $_POST['NO'];
 		$groupid = $_POST['groupid'];
 
-        //刪除資料庫資料語法
+        //刪除帖子
         $sql = "DELETE FROM `".$prefix."forum_posts` WHERE `NO`='$NO';";
         if(mysqli_query($conn,$sql))
         {
-            echo '刪除成功!';
+            echo '刪除成功!<br />';
+        }
+        else
+        {
+			echo '刪除失敗!<br />';
+        }
+		
+        //刪除與帖子相關的回覆
+        $sql = "DELETE FROM `".$prefix."forum_posts_reply` WHERE `posts_id`='$NO';";
+        if(mysqli_query($conn,$sql))
+        {
+            echo '回覆刪除成功!<br />';
 			if($config['url_static']=="true")
 			{
 				echo '<meta http-equiv=REFRESH CONTENT=2;url=forum-'.$groupid.'.html>';	
@@ -51,7 +62,7 @@ if($_SESSION[$config["cookie_prefix"].'mod'] != null or $_SESSION[$config["cooki
         }
         else
         {
-                echo '刪除失敗!';
+                echo '回覆刪除失敗!<br />';
                 echo '<meta http-equiv=REFRESH CONTENT=2;url=forum_posts_delete.php?NO='.$NO.'>';
         }
 	}

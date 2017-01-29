@@ -1,27 +1,28 @@
-﻿<?php 
-header("Content-Type:text/html; charset=utf-8");
+<?php 
 session_start();
-include("../mysql_connect.inc.php");
+
+require_once("../mysql_connect.inc.php"); 
+require_once('../config.php');
+
 $groupid = $_POST['groupid'];
 
-if($_SESSION['admin'] != null)
-{
+	if($_SESSION[$config['cookie_prefix'].'admin'] != null)
+	{
         //刪除資料庫資料語法
-        $sql = "DELETE FROM forum_group WHERE groupid='$groupid';";
-        if(mysql_query($sql))
+        $sql = "DELETE FROM `".$prefix."forum_group` WHERE `groupid`='$groupid';";
+        if(mysqli_query($conn,$sql))
         {
-                echo '刪除成功!';
-                echo '<meta http-equiv=REFRESH CONTENT=2;url=forum_group_panel.php>';
+			echo '刪除成功!';
+			echo '<meta http-equiv=REFRESH CONTENT=2;url=forum_group_panel.php>';
         }
         else
         {
-                echo '刪除失敗!';
-                echo '<meta http-equiv=REFRESH CONTENT=2;url=forum_group_delete.php>';
+			echo '刪除失敗!';
+			echo '<meta http-equiv=REFRESH CONTENT=2;url=forum_group_delete.php>';
         }
-}
-else
-{
-        echo '您無權限觀看此頁面!';
-        echo '<meta http-equiv=REFRESH CONTENT=2;url=index.php>';
-}
+	}
+	else
+	{
+		header("location:../login.php");
+	}
 ?>

@@ -10,23 +10,37 @@ require_once("inc/function.php");
 <head>
 	<title><?php echo $config["sitename"];?>-登出中...</title>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- 最新編譯和最佳化的 CSS -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- 選擇性佈景主題 -->
+	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+	<!--引入Jquery-->
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<!-- 最新編譯和最佳化的 JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
+	<!--自訂義css-->
 	<link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-	<!--標題-->
-	<h1><?php echo $config["sitename"];?>-登出中...</h1>
-	<?php include_once("nav.php");?><!--嵌入nav.php-->
-	<hr><size=5>
-	<!--內容-->
-	<?php 
-		cpf_logout();
-		echo "登出成功！";
-		echo "<meta http-equiv=REFRESH CONTENT=1;url=login.php>";
-	?>
-	<hr><size=5>
-	<!--頁尾-->
-	<?php include_once("cpf-footer.php");?>
+	<div class="container">
+		<!--標題-->
+		<h1 class="text-center"><?php echo $config["sitename"];?>-登出中...</h1>
+		<?php include_once("nav.php");?><!--嵌入nav.php-->
+		<hr><size=5>
+		<!--內容-->
+		<?php 
+			cpf_logout();
+		?>
+		<div class="alert alert-success" role="alert">
+			<b>登出成功！</b>
+		</div>
+		<meta http-equiv="refresh" content="2;url=login.php" />
+		<hr><size=5>
+		<!--頁尾-->
+		<?php include_once("cpf-footer.php");?>
+	</div>
 </body>
 
 </html>
